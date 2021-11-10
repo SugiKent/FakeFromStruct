@@ -3,31 +3,29 @@ import XCTest
 
 final class FakeFromStructTests: XCTestCase {
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-//        let target = FakeFromStruct<type(of: TestTargetStruct)>()
-        let mirror = Mirror(reflecting: TestTargetStruct.self)
-        print(mirror.children)
-        var result: [String: Any] = [:]
-        for (labelMaybe, valueMaybe) in mirror.children {
-            guard let label = labelMaybe else {
-                continue
-            }
-            
-            result[label] = type(of: valueMaybe)
-        }
-        print(result)
-
+        var targetStruct = TestTargetStruct()
+        targetStruct = FakeFromStruct.withFakeValues(of: targetStruct)
         
-        print("=============")
-        let target = FakeFromStruct.withFakeValues(of: TestTargetStruct.self)
-
-        print(target)
-//        XCTAssertEqual(target.name, "Hello, World!")
+        print(targetStruct)
+        //        XCTAssertEqual(target.name, "Hello, World!")
     }
 }
 
 struct TestTargetStruct: Codable {
-    var name: String
+    var name: String = ""
+    var code: Int = 0
+    var price: Double = 0.0
+    // TODO: 再帰的な処理が必要なプロパティをどうするか
+    var members: [String] = []
+    //    var child: TestChildTargetStruct = TestChildTargetStruct()
+    //
+    var nameNullable: String?
+    var codeNullable: Int?
+    var priceNullable: Double?
+//    var membersNullable: [String]?
+    //    var childNullable:TestChildTargetStruct?
+}
+
+struct TestChildTargetStruct: Codable {
+    var address: String?
 }
